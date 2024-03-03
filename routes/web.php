@@ -23,4 +23,13 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-require __DIR__.'/auth.php';
+Route::group(['middleware' => 'auth', 'prefix' => 'users', 'as' => 'users.', 'namespace' => 'App\Livewire\Post'], function () {
+    Route::group(['prefix' => 'posts', 'as' => 'posts.'], function () {
+        Route::get('/', Index::class)->name('index');
+        Route::get('/create', Create::class)->name('create');
+        Route::get('/edit/{post}', Edit::class)->name('edit');
+        Route::get('/show', Show::class)->name('show');
+    });
+});
+
+require __DIR__ . '/auth.php';
